@@ -39,12 +39,10 @@ export function initTable(settings, onAction) {
         onAction(e.target); 
     });
 
-    // Обработка события reset
     root.container.addEventListener('reset', (e) => {
         setTimeout(() => onAction(e.target)); 
     });
 
-    // Обработка события submit
     root.container.addEventListener('submit', (e) => {
         e.preventDefault();
         onAction(e.submitter); 
