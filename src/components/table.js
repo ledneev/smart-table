@@ -35,12 +35,10 @@ export function initTable(settings, onAction) {
 
     // @todo: #1.3 —  обработать события и вызвать onAction()
 
-    root.container.addEventListener('change', (e) => {
-        onAction(e.target); 
-    });
+    root.container.addEventListener('change', onAction);
 
     root.container.addEventListener('reset', (e) => {
-        setTimeout(() => onAction(e.target)); 
+        setTimeout(() => onAction(null), 10); 
     });
 
     root.container.addEventListener('submit', (e) => {
@@ -48,19 +46,24 @@ export function initTable(settings, onAction) {
         onAction(e.submitter); 
     });
 
-    const render = (data) => {
-        // @todo: #1.1 — преобразовать данные в массив строк на основе шаблона rowTemplate
-        const nextRows = data.map((item) => {
+   const render = (data) => { 
+        // @todo: #1.1 — преобразовать данные в массив строк на основе шаблона rowTemplate 
+        const nextRows = data.map((item) => { 
             const row = cloneTemplate(rowTemplate)
-            Object.keys(item).forEach(key => {
-                if (row.elements && row.elements[key]) {
-                    row.elements[key].textContent = item[key];
+            Object.keys(item).forEach(key => { 
+                if (row.elements && row.elements[key]) { 
+                    const element = row.elements[key];
+                    if (element.tagName === 'INPUT' || element.tagName === 'SELECT') {
+                        element.value = item[key];
+                    } else {
+                        element.textContent = item[key];
+                    }
                 }
-             })
-        return row.container;
-        });
-        root.elements.rows.replaceChildren(...nextRows);
-    }
+            }) 
+            return row.container; 
+        }); 
+        root.elements.rows.replaceChildren(...nextRows); 
+    } 
 
     return {...root, render};
 }

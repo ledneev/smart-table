@@ -19,13 +19,14 @@ export function initFiltering(elements) {
 
     const applyFiltering = (query, state, action) => {
         // @todo: #4.2 — обработать очистку поля
-        if (action && action.name === 'clear' && action.dataset.field) {
-            const fieldName = action.dataset.field;
-            if (elements[fieldName]) {
-                elements[fieldName].value = '';
-                state[fieldName] = '';
-            }
+    if (action && action.name === 'clear' && action.dataset.field) {
+        const fieldName = action.dataset.field;
+        const inputField = document.querySelector(`[name="${fieldName}"]`);
+        if (inputField) {
+            inputField.value = '';
+            state[fieldName] = '';
         }
+    }
 
         // @todo: #4.5 — отфильтровать данные, используя компаратор
         const filter = {};
